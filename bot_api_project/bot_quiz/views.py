@@ -7,12 +7,10 @@ from datetime import datetime
 from .serializers import AdviseSerializer, DateTimeSerializer
 
 
-class CurrentDateTimeView(APIView):
-    
+class CurrentDateTimeView(APIView):    
     """
     View to get the current date and time.
-    """
-    
+    """    
     def get(self, request, format=None):
         """
         Return the current date and time.
@@ -21,12 +19,10 @@ class CurrentDateTimeView(APIView):
         serializer = DateTimeSerializer({'current_datetime': now})
         return Response(serializer.data)
 
-class RandomAdvisesView(APIView):
-    
+class RandomAdvisesView(APIView):   
     """
     View to get random advises.
-    """
-    
+    """   
     def get(self, request, format=None):
         """
         Return three random advises.
@@ -36,10 +32,8 @@ class RandomAdvisesView(APIView):
         serializer = AdviseSerializer(random_advises, many=True)
         return Response(serializer.data)
     
-def index(request):
-    
+def index(request):   
     """
     View to tittle page.
-    """
-    
+    """  
     return render(request, 'bot_quiz/index.html')
