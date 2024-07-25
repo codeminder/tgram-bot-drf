@@ -5,10 +5,18 @@ import requests
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.utils import executor
+import environ
+
+# Import BASE_DIR from settings
+from bot_api_project.settings import BASE_DIR
+# Initialize environ
+env = environ.Env()
+# Read .env file
+environ.Env.read_env(BASE_DIR / '.env')
 
 API_URL_TIME = 'http://127.0.0.1:8000/api/current-datetime/'
 API_URL_ADVISES = 'http://127.0.0.1:8000/api/random-advises/'
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+TOKEN = env('TELEGRAM_BOT_TOKEN')
 
 logging.basicConfig(level=logging.INFO)
 
@@ -18,6 +26,9 @@ dp.middleware.setup(LoggingMiddleware())
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
+    """
+    Send a welcome message with buttons.
+    """
     keyboard = types.InlineKeyboardMarkup()
     time_button = types.InlineKeyboardButton("Котра година", callback_data='time')
     advise_button = types.InlineKeyboardButton("Надати поради", callback_data='advise')
@@ -26,6 +37,9 @@ async def send_welcome(message: types.Message):
 
 @dp.callback_query_handler(lambda c: c.data == 'time')
 async def process_time_callback(callback_query: types.CallbackQuery):
+    """
+    Process time request and send current time.
+    """
     try:
         response = requests.get(API_URL_TIME)
         response.raise_for_status()
@@ -37,6 +51,9 @@ async def process_time_callback(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data == 'advise')
 async def process_advise_callback(callback_query: types.CallbackQuery):
+    """
+    Process advise request and send random advises.
+    """
     try:
         response = requests.get(API_URL_ADVISES)
         response.raise_for_status()
