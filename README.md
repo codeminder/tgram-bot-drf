@@ -40,7 +40,6 @@ bot_api_project/
 ├── manage.py
 ├── requirements.txt
 ├── .env
-└── README.md
 ```
 ## Getting Started
 
